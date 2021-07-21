@@ -1,0 +1,80 @@
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+
+  # Attach these labels to any time series or alerts when communicating with
+  # external systems (federation, remote storage, Alertmanager).
+  external_labels:
+    monitor: 'docker-host-alpha'
+
+# Load and evaluate rules in this file every 'evaluation_interval' seconds.
+rule_files:
+  - "alert.rules"
+
+
+# A scrape configuration containing exactly one endpoint to scrape.
+scrape_configs:
+  - job_name: 'consul-node-exporter'
+    consul_sd_configs:
+      - server: 'master:8500'
+        services: []
+    relabel_configs:
+      - source_labels: [__meta_consul_tags]
+        regex: '.*,nodeexporter,.*'
+        action: keep
+      - regex: __meta_consul_service_metadata_(.+)
+        action: labelmap
+
+  - job_name: 'consul-cadvisor-exproter'
+    consul_sd_configs:
+      - server: 'master:8500'
+        services: []
+    # https://github.com/transferwise/prometheus-envoy-dashboards/blob/master/prometheus.yml
+    relabel_configs:
+      - source_labels: [__meta_consul_tags]
+        regex: '.*,cadvisor,.*'
+        action: keep
+      - regex: __meta_consul_service_metadata_(.+)
+        action: labelmap
+
+  - job_name: 'federate'
+    scrape_interval: 10s
+    honor_labels: true
+    metrics_path: '/federate'
+    basic_auth:
+      username: admin
+      password: admin
+    params:
+      'match[]':
+        - '{job="prometheus"}'
+        - '{__name__=~"job:.*"}'
+        - '{job=~"prometheus.*"}'
+        - '{job="docker"}'
+        - '{job="consul-node-exporter"}'
+        - '{job="consul-cadvisor-exproter"}'
+    static_configs:
+      - targets:
+          - 'master:9981'
+  #  - job_name: 'cadvisor'
+  #    scrape_interval: 5s
+  #    static_configs:
+  #      - targets: ['cadvisor:8080']
+
+  - job_name: 'prometheus'
+    scrape_interval: 10s
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'pushgateway'
+    scrape_interval: 10s
+    honor_labels: true
+    static_configs:
+      - targets: ['pushgateway:9091']
+
+
+alerting:
+  alertmanagers:
+    - scheme: http
+      static_configs:
+        - targets:
+            - 'alertmanager:9093'

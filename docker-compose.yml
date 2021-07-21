@@ -1,0 +1,166 @@
+version: '3.0'
+
+networks:
+  monitor-net:
+    driver: bridge
+
+volumes:
+    prometheus_data: {}
+    grafana_data: {}
+
+services:
+
+  prometheus:
+    image: prom/prometheus:v2.23.0
+    container_name: prometheus
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+    expose:
+      - 9090
+    networks:
+      - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
+
+  alertmanager:
+    image: prom/alertmanager:v0.21.0
+    container_name: alertmanager
+    volumes:
+      - ./alertmanager:/etc/alertmanager
+    command:
+      - '--config.file=/etc/alertmanager/config.email.yml'
+      - '--storage.path=/alertmanager'
+    restart: unless-stopped
+    expose:
+      - 9093
+    networks:
+      - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
+
+  grafana:
+    image: grafana/grafana:7.3.6
+    container_name: grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    env_file:
+      - ./.envs/.grafana
+    restart: unless-stopped
+    expose:
+      - 3000
+    networks:
+      - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
+
+  pushgateway:
+    image: prom/pushgateway:v1.3.1
+    container_name: pushgateway
+    restart: unless-stopped
+    expose:
+      - 9091
+    networks:
+      - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
+
+  # consul server
+  consulserver:
+    image: progrium/consul:latest
+    hostname: consulserver
+    container_name: consulserver
+    restart: always
+    env_file:
+      - ./.envs/.consul
+    labels:
+      org.label-schema.group: "monitoring"
+    ports:
+      - "8300:8300"
+      - "8301:8301"
+      - "8301:8301/udp"
+      - "8302:8302/udp"
+      - "8302:8302"
+      - "8400:8400"
+      - "8500:8500"
+      - "8600:8600"
+    command: -server -ui-dir /ui -data-dir /tmp/consul --bootstrap-expect=2 -client 0.0.0.0
+
+  # consul server1
+  consulserver1:
+    image: progrium/consul:latest
+    hostname: consulserver1
+    container_name: consulserver1
+    env_file:
+      - ./.envs/.consul
+    restart: always
+    labels:
+      org.label-schema.group: "monitoring"
+    depends_on:
+      - consulserver
+    ports:
+      - "19300:8300"
+      - "19301:8301"
+      - "19301:8301/udp"
+      - "19302:8302/udp"
+      - "19302:8302"
+      - "19400:8400"
+      - "19500:8500"
+      - "19600:8600"
+    command: -server -data-dir /tmp/consul -join consulserver -client 0.0.0.0
+
+
+  # consul server2
+  consulserver2:
+    image: progrium/consul:latest
+    hostname: consulserver2
+    container_name: consulserver2
+    env_file:
+      - ./.envs/.consul
+    restart: always
+    labels:
+      org.label-schema.group: "monitoring"
+    depends_on:
+      - consulserver
+    ports:
+      - "17300:8300"
+      - "17301:8301"
+      - "17301:8301/udp"
+      - "17302:8302/udp"
+      - "17302:8302"
+      - "17400:8400"
+      - "17500:8500"
+      - "17600:8600"
+    command: -server -data-dir /tmp/consul -join consulserver -client 0.0.0.0
+
+    # consul client3
+  consulserver3:
+    image: progrium/consul:latest
+    hostname: consulserver3
+    container_name: consulserver3
+    env_file:
+      - ./.envs/.consul
+    restart: always
+    labels:
+      org.label-schema.group: "monitoring"
+    depends_on:
+      - consulserver
+    ports:
+      - "10300:8300"
+      - "10301:8301"
+      - "10301:8301/udp"
+      - "10302:8302/udp"
+      - "10302:8302"
+      - "10400:8400"
+      - "10500:8500"
+      - "10600:8600"
+    command: -ui-dir /ui -data-dir /tmp/consul -retry-join consulserver -client 0.0.0.0

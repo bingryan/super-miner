@@ -1,0 +1,42 @@
+global:
+  # more：https://prometheus.io/docs/alerting/latest/configuration/#email_config
+  resolve_timeout: 5m
+  # smtp
+  smtp_from: 'xxxx'
+  smtp_smarthost: 'xxxx'
+  smtp_auth_username: 'xxxx'
+  smtp_auth_password: 'xxxx'
+  smtp_require_tls: false
+templates:
+  - '/etc/alertmanager/template/email.tmpl'
+route:
+  receiver: ops
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 24h
+  group_by: [alertname]
+  routes:
+    - match:
+        team: operations
+      group_by: [env,dc]
+      receiver: 'ops'
+    - receiver: ops
+      group_wait: 10s
+      match:
+        team: operations
+receivers:
+  - name: ops
+    email_configs:
+      - to: 'xxxx' 
+        html: '{{ template "email.to.html" . }}'
+        send_resolved: true
+        headers:
+          from: "xxxx"
+          subject: "xxxx"
+          to: "xxxx"
+inhibit_rules:
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'dev', 'instance']
