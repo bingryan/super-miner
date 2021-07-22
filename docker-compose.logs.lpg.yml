@@ -1,0 +1,48 @@
+version: '3.0'
+
+networks:
+  monitor-net:
+    driver: bridge
+
+volumes:
+    grafana_data: {}
+
+services:
+    # github: https://github.com/grafana/loki
+    # doc: https://grafana.com/docs/loki/latest/overview/
+    # docker hub: https://hub.docker.com/r/grafana/loki
+    loki:
+        image: grafana/loki
+        container_name: loki
+        volumes:
+        - ./loki/:/etc/loki/
+        command: -config.file=/etc/loki/loki.yml
+        ports:
+        - 3100:3100
+
+    # docker hub: https://hub.docker.com/r/grafana/promtail
+    promtail:
+        image: grafana/promtail
+        container_name: promtail
+        volumes:
+        - ./logs/:/var/log/
+        - ./promtail:/etc/promtail/
+        command: -config.file=/etc/promtail/promtail.yml
+
+    # github: https://github.com/grafana/grafana
+    # grafana: https://hub.docker.com/r/grafana/grafana
+    grafana:
+        image: grafana/grafana:7.5.10
+        container_name: grafana
+        volumes:
+          - grafana_data:/var/lib/grafana
+          - ./grafana/provisioning:/etc/grafana/provisioning
+        env_file:
+          - ./.envs/.grafana
+        restart: unless-stopped
+        expose:
+          - 3000
+        networks:
+          - monitor-net
+        labels:
+          org.label-schema.group: "monitoring"
