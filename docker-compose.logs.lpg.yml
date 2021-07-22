@@ -17,6 +17,8 @@ services:
         volumes:
         - ./loki/:/etc/loki/
         command: -config.file=/etc/loki/loki.yml
+        networks:
+            - monitor-net
         ports:
         - 3100:3100
 
@@ -24,6 +26,8 @@ services:
     promtail:
         image: grafana/promtail
         container_name: promtail
+        networks:
+            - monitor-net
         volumes:
         - ./logs/:/var/log/
         - ./promtail:/etc/promtail/

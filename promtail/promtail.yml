@@ -28,3 +28,14 @@ scrape_configs:
       env: dev
       host: localhost
       __path__: /var/log/*.log
+
+- job_name: containers
+  entry_parser: raw
+  static_configs:
+  - targets:
+      - localhost
+    labels:
+      job: containerlogs
+      env: dev
+      host: localhost
+      __path__: /var/lib/docker/containers/*/*log
