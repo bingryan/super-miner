@@ -54,7 +54,7 @@ services:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning
     env_file:
-      - ./.envs/.grafana
+      - ./.envs/.grafana/.default
     restart: unless-stopped
     expose:
       - 3000
@@ -81,7 +81,7 @@ services:
     container_name: consulserver
     restart: always
     env_file:
-      - ./.envs/.consul
+      - ./.envs/.consul/.default
     labels:
       org.label-schema.group: "monitoring"
     ports:
@@ -101,7 +101,7 @@ services:
     hostname: consulserver1
     container_name: consulserver1
     env_file:
-      - ./.envs/.consul
+      - ./.envs/.consul/.default
     restart: always
     labels:
       org.label-schema.group: "monitoring"
@@ -125,7 +125,7 @@ services:
     hostname: consulserver2
     container_name: consulserver2
     env_file:
-      - ./.envs/.consul
+      - ./.envs/.consul/.default
     restart: always
     labels:
       org.label-schema.group: "monitoring"
@@ -148,7 +148,7 @@ services:
     hostname: consulserver3
     container_name: consulserver3
     env_file:
-      - ./.envs/.consul
+      - ./.envs/.consul/.default
     restart: always
     labels:
       org.label-schema.group: "monitoring"
