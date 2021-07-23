@@ -19,4 +19,4 @@ getsubstrate:
 
 .PHONY: substrate_server
 substrate_server:
-	nohup substrate --dev --ws-external >> /var/log/chain.log 2>&1 &
+	nohup substrate --dev --ws-external >> ./logs/chain.log 2>&1 &
