@@ -38,11 +38,11 @@ services:
     grafana:
         image: grafana/grafana:7.5.10
         container_name: grafana
-        # volumes:
-        #   - grafana_data:/var/lib/grafana
-        #   - ./grafana/provisioning:/etc/grafana/provisioning
-        # env_file:
-        #   - ./.envs/.grafana/.default
+        volumes:
+          - grafana_data:/var/lib/grafana
+          - ./grafana/provisioning:/etc/grafana/provisioning
+        env_file:
+          - ./.envs/.grafana/.default
         restart: unless-stopped
         ports:
           - 3000:3000
