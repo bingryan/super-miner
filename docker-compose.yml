@@ -63,6 +63,14 @@ services:
     labels:
       org.label-schema.group: "monitoring"
 
+  karma:
+    image: lmierzwa/karma:v0.89
+    volumes: 
+    -  "./karma/karma.yaml:/etc/karma.yaml"
+    command: --config.file /etc/karma.yaml
+    ports:
+    - 8080:8080
+
   pushgateway:
     image: prom/pushgateway:v1.3.1
     container_name: pushgateway

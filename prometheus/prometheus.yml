@@ -10,6 +10,9 @@ global:
 # Load and evaluate rules in this file every 'evaluation_interval' seconds.
 rule_files:
   - "alert.rules"
+  - "docker.rules"
+  - "node.rules"
+
 
 
 # A scrape configuration containing exactly one endpoint to scrape.
