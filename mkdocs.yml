@@ -1,0 +1,40 @@
+# https://www.mkdocs.org/
+site_name: monitor
+site_description:
+repo_url: https://github.com/bingryan/monitor
+site_dir: monitor
+copyright:
+dev_addr: 0.0.0.0:8002
+theme:
+  name: 'material'
+  font:
+    text: Ubuntu
+    code: Ubuntu Mono
+
+
+nav:
+  - Index: 'index.md'
+
+
+
+markdown_extensions:
+  - meta
+  - admonition
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tabbed
+  - pymdownx.tilde
