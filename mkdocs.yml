@@ -1,8 +1,8 @@
 # https://www.mkdocs.org/
-site_name: monitor
+site_name: super-miner
 site_description:
-repo_url: https://github.com/bingryan/monitor
-site_dir: monitor
+repo_url: https://github.com/bingryan/super-miner
+site_dir: super-miner
 copyright:
 dev_addr: 0.0.0.0:8002
 theme:
@@ -15,11 +15,11 @@ theme:
 nav:
   - 文档概要: 'README.md'
   - 常用脚本: 'script/README.md'
-      - docker: 'script/docker.md'
+    - docker: 'script/docker.md'
   - 项目实施文档: 'documents/index.md'
   - 母盘制作: 'startup.md'
   - ansible运维: 'ansible/README.md'
-      - 批量处理: 'ansible/batch.md'
+    - 批量处理: 'ansible/batch.md'
   - 监控dashboard: 'startup.md'
   - 预警: 'alert.md'
   - 硬盘操作: 'disk'
