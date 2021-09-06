@@ -67,12 +67,11 @@
 
 ## 展示
 
+![karma](https://github.com/prymitive/karma/raw/main/docs/img/dark.png)
+
 ![资源总览页截图](https://starsl.cn/static/img/sa.png)
 
 ![资源明细页截图](https://starsl.cn/static/img/s1.png)
-
-![karma](https://github.com/prymitive/karma/raw/main/docs/img/dark.png)
-
 ## License
 
 <font color="red">本项目为管理存放在全球多个地方几千台矿机管理的方案实现,全部基于开源组件而成，无License，可以随便复制使用和用于任何各种目的。同时不对使用过程出现的问题负任何责任.</font>
