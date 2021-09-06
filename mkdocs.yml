@@ -1,6 +1,7 @@
 # https://www.mkdocs.org/
 site_name: super-miner
-site_description:
+site_description: 家用挖矿、自建机房、IDC机房等场景的一个可组合挖矿机器管理方案
+repo_name: 'bingryan/super-miner'
 repo_url: https://github.com/bingryan/super-miner
 site_dir: super-miner
 copyright:
