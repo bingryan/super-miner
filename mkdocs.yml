@@ -14,15 +14,18 @@ theme:
 
 nav:
     - 文档概要: 'README.md'
-    - 常用脚本: 'script/README.md'
-        - docker: 'script/docker.md'
-    - 项目实施文档: 'documents/index.md'
+    - 脚本:
+       - 常用脚本: 'script/README.md'
+       - docker: 'script/docker.md'
+    - 项目实施文档: 'deploy.md'
     - 母盘制作: 'startup.md'
-    - ansible运维: 'ansible/README.md'
+    - ansible:
+        - 运维: 'ansible/README.md'
         - 批量处理: 'ansible/batch.md'
-    - 监控dashboard: 'startup.md'
+    - 监控dashboard: 'dashboard/README.md'
     - 预警: 'alert.md'
-    - 硬盘操作: 'disk'
+    - 硬盘操作: 'disk.md'
+    - 资源限制: 'limit.md'
     - 堡垒机JumpServer: 'jumpserver/README.md'
     - 日志处理: 'logs.md'
 
