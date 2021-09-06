@@ -13,7 +13,18 @@ theme:
 
 
 nav:
-  - Index: 'index.md'
+  - 文档概要: 'README.md'
+  - 常用脚本: 'script/README.md'
+      - docker: 'script/docker.md'
+  - 项目实施文档: 'documents/index.md'
+  - 母盘制作: 'startup.md'
+  - ansible运维: 'ansible/README.md'
+      - 批量处理: 'ansible/batch.md'
+  - 监控dashboard: 'startup.md'
+  - 预警: 'alert.md'
+  - 硬盘操作: 'disk'
+  - 堡垒机JumpServer: 'jumpserver/README.md'
+  - 日志处理: 'logs.md'
 
 
 

@@ -18,7 +18,7 @@ services:
         - ./loki/:/etc/loki/
         command: -config.file=/etc/loki/loki.yml
         networks:
-            - monitor-net
+            - miner-net
         ports:
         - 3100:3100
 
@@ -27,7 +27,7 @@ services:
         image: grafana/promtail
         container_name: promtail
         networks:
-            - monitor-net
+            - miner-net
         volumes:
         - ./logs/:/var/log/
         - ./promtail:/etc/promtail/
@@ -47,6 +47,6 @@ services:
         ports:
           - 3000:3000
         networks:
-          - monitor-net
+          - miner-net
         labels:
-          org.label-schema.group: "monitoring"
+          org.label-schema.group: "miner"

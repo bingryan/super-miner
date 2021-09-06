@@ -27,7 +27,7 @@ services:
     expose:
       - 9090
     networks:
-      - miner-net
+      - monitor-net
     labels:
       org.label-schema.group: "miner"
 
@@ -43,33 +43,9 @@ services:
     expose:
       - 9093
     networks:
-      - miner-net
+      - monitor-net
     labels:
       org.label-schema.group: "miner"
-
-  grafana:
-    image: grafana/grafana:7.3.6
-    container_name: grafana
-    volumes:
-      - grafana_data:/var/lib/grafana
-      - ./grafana/provisioning:/etc/grafana/provisioning
-    env_file:
-      - ./.envs/.grafana/.default
-    restart: unless-stopped
-    expose:
-      - 3000
-    networks:
-      - miner-net
-    labels:
-      org.label-schema.group: "miner"
-
-  karma:
-    image: lmierzwa/karma:v0.89
-    volumes:
-    -  "./karma/karma.yaml:/etc/karma.yaml"
-    command: --config.file /etc/karma.yaml
-    ports:
-    - 8080:8080
 
   pushgateway:
     image: prom/pushgateway:v1.3.1
@@ -78,18 +54,18 @@ services:
     expose:
       - 9091
     networks:
-      - miner-net
+      - monitor-net
     labels:
       org.label-schema.group: "miner"
 
-  # consul server
+  # consul server，对外暴露的ui接口为8500，可通过ui直接访问consulserver，并且配置在2台consul服务器的情况下集群才起作用
   consulserver:
     image: progrium/consul:latest
     hostname: consulserver
     container_name: consulserver
     restart: always
-    env_file:
-      - ./.envs/.consul/.default
+    environment:
+      SERVICE_TAGS: consul
     labels:
       org.label-schema.group: "miner"
     ports:
@@ -103,13 +79,13 @@ services:
       - "8600:8600"
     command: -server -ui-dir /ui -data-dir /tmp/consul --bootstrap-expect=2 -client 0.0.0.0
 
-  # consul server1
+  # consul server1在consul server服务起来后，加入集群中
   consulserver1:
     image: progrium/consul:latest
     hostname: consulserver1
     container_name: consulserver1
-    env_file:
-      - ./.envs/.consul/.default
+    environment:
+      SERVICE_TAGS: consul
     restart: always
     labels:
       org.label-schema.group: "miner"
@@ -127,13 +103,13 @@ services:
     command: -server -data-dir /tmp/consul -join consulserver -client 0.0.0.0
 
 
-  # consul server2
+  # consul server2在consul server服务起来后，加入集群中
   consulserver2:
     image: progrium/consul:latest
     hostname: consulserver2
     container_name: consulserver2
-    env_file:
-      - ./.envs/.consul/.default
+    environment:
+      SERVICE_TAGS: consul
     restart: always
     labels:
       org.label-schema.group: "miner"
@@ -150,13 +126,13 @@ services:
       - "17600:8600"
     command: -server -data-dir /tmp/consul -join consulserver -client 0.0.0.0
 
-    # consul client3
+    # consul client在consul server服务起来后，加入集群中
   consulserver3:
     image: progrium/consul:latest
     hostname: consulserver3
     container_name: consulserver3
-    env_file:
-      - ./.envs/.consul/.default
+    environment:
+      SERVICE_TAGS: consul
     restart: always
     labels:
       org.label-schema.group: "miner"

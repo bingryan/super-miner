@@ -119,7 +119,3 @@ dist
 .vscode/
 .idea/
 .local
-
-# local
-Call.yml
-

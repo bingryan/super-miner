@@ -43,16 +43,6 @@ while true; do
         --path.procfs='/host/proc' --path.rootfs='/rootfs' \
         --path.sysfs='/host/sys' --collector.filesystem.ignored-mount-points='^/(sys|proc|dev|host|etc)($$|/)'
 
-      docker run -d --name=cadvisor_${TAG}_$local_host -h  cadvisor_${TAG}_$local_host  --restart=always \
-        --network host   -p 8080:8080  \
-        -v /:/rootfs:ro \
-        -v /var/run:/var/run:rw \
-        -v /var/lib/docker/:/var/lib/docker:ro \
-        -v /cgroup:/cgroup:ro \
-        -e SERVICE_NAME=cadvisor_${TAG}_$local_host \
-        -e SERVICE_TAGS=cadvisor \
-        anjia0532/cadvisor
-
       break
   fi
   else
