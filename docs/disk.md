@@ -199,7 +199,7 @@ sudo vgremove LVM
 
 ```shell
 step1:
-  注释掉 /etc/fstab 上面的挂载
+  注释掉 /etc/fstab 上面的挂载,之后重启机器
 step2: 删除逻辑卷
     sudo lvremove LVM
     sudo vgremove LVM
