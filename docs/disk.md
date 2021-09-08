@@ -107,7 +107,7 @@ sudo vgextend LVM /dev/sde
 sudo vgextend LVM /dev/sdf
 ```
 
-#### 5.创建lv
+### 5.创建lv
 
 ```shell
 //lvcreate -L [自定义分区大小] -n [自定义分区名称] [vg名称]
