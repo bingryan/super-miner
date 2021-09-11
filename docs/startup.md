@@ -1,13 +1,15 @@
 # 母盘制作
 
-## 安装依赖
+
+## 系统
+### 安装依赖
 
 ```
 sudo bin/install.sh
 ```
 
 
-## 设置ssh免密码
+### 设置ssh免密码
 
 ```bash
 ssh-keygen -t rsa
@@ -17,7 +19,7 @@ ssh-keygen -t rsa
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 ```
 
-## 设置用户免密码
+### 设置用户免密码
 
 root 下进行
 `chmod u+w /etc/sudoers`
@@ -56,7 +58,7 @@ abc   ALL=(ALL)  NOPASSWD:ALL
 
 `chmod u-w /etc/sudoers`
 
-## Ubuntu 设置开机自启动
+### Ubuntu 设置开机自启动
 
 
 `方案一`
@@ -162,4 +164,5 @@ systemctl is-enabled rc-local    查看服务是否开机启动
 systemctl list-unit-files|grep enabled    查看开机启动的服务列表
 systemctl --failed    查看启动失败的服务列表
 ```
+
 
