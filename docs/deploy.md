@@ -2,7 +2,7 @@
 
 ## pull方式部署
 
-![super-miner-framework](media/16315888535300/16316741237066.png)
+![super-miner-framework](assets/16315888535300/16316741237066.png)
 
 该部署方式是把一个拥有公网IP的云服务器作为数据收集和监控总站，各个机器的数据以代理的方式，通过`federate`的进行集中，同时每个机器的中的数据会集中到当地机器的master，由master 统一转发处理
 
