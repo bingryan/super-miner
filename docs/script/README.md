@@ -55,5 +55,20 @@ mkdir empty && rsync -r --delete empty/ some-dir && rmdir some-dir
 lsblk  #列出块设备信息（df -h不能看到的卷）
 ```
 
+#### 查看文件
+
+`查看目录总大小`
+
+```
+du -sh
+```
+
+
+`查看目录下各个文件/目录大小`
+
+```
+ls -lh
+```
+
 ## 资源文档
 [the-art-of-command-line(新手)](https://github.com/jlevy/the-art-of-command-line/blob/master/README-zh.md)
