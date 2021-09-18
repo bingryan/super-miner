@@ -70,5 +70,13 @@ du -sh
 ls -lh
 ```
 
+
+`显示直接子目录文件及文件夹大小统计值`
+
+
+```
+du -h –max-depth=0 *
+```
+
 ## 资源文档
 [the-art-of-command-line(新手)](https://github.com/jlevy/the-art-of-command-line/blob/master/README-zh.md)
