@@ -24,6 +24,7 @@ nav:
     - ansible:
         - 运维: 'ansible/README.md'
         - 批量处理: 'ansible/batch.md'
+        - 案列: 'ansible/demo.md'
     - 监控dashboard: 'dashboard/README.md'
     - 预警: 'alert.md'
     - 硬盘操作: 'disk.md'
